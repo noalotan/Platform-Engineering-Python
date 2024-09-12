@@ -1,6 +1,18 @@
 import boto3
+ec2_client = boto3.client('ec2')
 
-def create_ec2_instance(image_id, instance_type):
+# configure image
+def conf_image_ec2(instance_image):
+    if instance_image == 'ubuntu':
+        image_id = 'ami-0e86e20dae9224db8'
+    else: 
+        image_id = 'ami-0e86e20dae9224db8'
+    return image_id
+
+
+#create ec2 
+def create_ec2(instance_image, instance_type, instance_name):
+    image_id = conf_image_ec2(instance_image)
     ec2_client = boto3.resource('ec2')
     instance = ec2_client.create_instances(
         ImageId=image_id,
@@ -13,38 +25,30 @@ def create_ec2_instance(image_id, instance_type):
         TagSpecifications=[
             {'ResourceType': 'instance',
              'Tags': [
-                 {'Key': 'Platform', 'Value': 'True-Noa'}
-             ]
-             }
-        ]
-    )
+                 {'Key': 'Name', 'Value': instance_name},
+                 {'Key': 'Platform', 'Value': 'True-Noa'}]}])
     print(f"\nInitiating instance now, please wait...")
     instance[0].wait_until_running()
     print(f"instance {instance[0].instance_id} was created successfully!\n")
 
 
 
-
-
-def list_instances():
-    ec2_client = boto3.client('ec2')
+#list ec2
+def list_ec2():
+    print(f"listing the instances: \n")
     instances = ec2_client.describe_instances(
-        Filters=[{'Name': 'tag:Platform',
-                   'Values': ['True-Noa']}])
+        Filters=[{'Name': 'tag:Platform', 'Values': ['True-Noa']}])
     for reservation in instances['Reservations']:
         for instance in reservation['Instances']:
             print(instance['InstanceId'])
 
 
-def stop_instances(instance_id):
-    ec2_client = boto3.client('ec2')
-    instance_ids = [instance_id]
-    instances = ec2_client.stop_instances(InstanceIds=instance_ids)
-    print(f"stopping the instance {instance_id}")
 
-
-def start_instances(instance_id):
-    ec2_client = boto3.client('ec2')
-    instance_ids = [instance_id]
-    instances = ec2_client.start_instances(InstanceIds=instance_ids)
-    print(f"starting the instance {instance_id}")
+#start/stop ec2
+def ec2_manage(instance_id, action):
+    if action == 'start':
+        ec2_client.start_instances(InstanceIds=[instance_id])
+        print(f"starting the instance {instance_id}")
+    elif action == 'stop':
+        ec2_client.stop_instances(InstanceIds=[instance_id])
+        print(f"stopping the instance {instance_id}")
