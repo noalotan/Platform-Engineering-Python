@@ -9,7 +9,6 @@ def conf_image_ec2(instance_image):
         image_id = 'ami-0e86e20dae9224db8'
     return image_id
 
-
 #create ec2 
 def create_ec2(instance_image, instance_type, instance_name):
     image_id = conf_image_ec2(instance_image)
@@ -31,8 +30,6 @@ def create_ec2(instance_image, instance_type, instance_name):
     instance[0].wait_until_running()
     print(f"instance {instance[0].instance_id} was created successfully!\n")
 
-
-
 #list ec2
 def list_ec2():
     print(f"listing the instances: \n")
@@ -41,8 +38,6 @@ def list_ec2():
     for reservation in instances['Reservations']:
         for instance in reservation['Instances']:
             print(instance['InstanceId'])
-
-
 
 #start/stop ec2
 def ec2_manage(instance_id, action):

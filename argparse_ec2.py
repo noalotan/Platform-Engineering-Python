@@ -1,6 +1,6 @@
 import argparse
 from manage_ec2 import create_ec2, list_ec2, ec2_manage
-from manage_s3 import create_s3, set_public_s3, upload_s3, list_s3
+from manage_s3 import create_s3, list_s3, upload_s3
 
 #ec2 parsers
 parser = argparse.ArgumentParser(description="AWS CLI Tool")
@@ -20,19 +20,6 @@ ec2_manage_parser.add_argument('--id', required=True, help='id of the instance y
 
 ec2_list_parser = ec2_subparsers.add_parser('list')
 
-args = parser.parse_args()
-
-# ec2 functions
-
-if args.resource == 'ec2':
-    if args.action == 'create':
-        create_ec2(args.image, args.type, args.name)
-    elif args.action == 'manage':
-        ec2_manage(args.id, args.process)
-    elif args.action == 'list':
-        list_ec2()
-
-
 #s3 parsers
 
 s3_parser = subparsers.add_parser('s3')
@@ -51,12 +38,22 @@ s3_list_parser = s3_subparsers.add_parser('list')
 
 args = parser.parse_args()
 
+ # ec2 functions
+
+if args.resource == 'ec2':
+    if args.action == 'create':
+        create_ec2(args.image, args.type, args.name)
+    elif args.action == 'manage':
+        ec2_manage(args.id, args.process)
+    elif args.action == 'list':
+        list_ec2()
+
 #s3 functions 
 
 if args.resource == 's3':
     if args.action == 'create':
-        create_s3('private', args.name)
+        create_s3(args.name, args.acl)
     elif args.action == 'upload':
-        upload_s3(args.file, args.bucket, args.key_name)
+        upload_s3(args.file, args.bucket, args.key_name) #,ExtraArgs={'ACL': 'public-read'})
     elif args.action == 'list':
         list_s3()
