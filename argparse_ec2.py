@@ -1,11 +1,12 @@
 import argparse
 from manage_ec2 import create_ec2, list_ec2, ec2_manage
 from manage_s3 import create_s3, list_s3, upload_s3
+from manage_route53 import create_private_route53, create_public_route53
 
-#ec2 parsers
 parser = argparse.ArgumentParser(description="AWS CLI Tool")
 subparsers = parser.add_subparsers(dest="resource")
 
+#ec2 parsers
 ec2_parser = subparsers.add_parser('ec2')
 ec2_subparsers = ec2_parser.add_subparsers(dest='action')
 
@@ -26,7 +27,7 @@ s3_parser = subparsers.add_parser('s3')
 s3_subparsers = s3_parser.add_subparsers(dest='action')
 
 s3_create_parser = s3_subparsers.add_parser('create')
-s3_create_parser.add_argument('--name', required=True, help='Bucket name')
+s3_create_parser.add_argument('--name', required=True, help='hosted zone name')
 s3_create_parser.add_argument('--acl', choices=['public-read', 'private'], default='private', help='Configure ACL for thr bucket')
 
 s3_upload_parser = s3_subparsers.add_parser('upload')
@@ -36,9 +37,23 @@ s3_upload_parser.add_argument('--key_name', required=True, help='New name for th
 
 s3_list_parser = s3_subparsers.add_parser('list')
 
+#route53 parsers
+
+s3_parser = subparsers.add_parser('route53')
+s3_subparsers = s3_parser.add_subparsers(dest='action')
+
+s3_create_parser = s3_subparsers.add_parser('create')
+s3_create_parser.add_argument('--name', required=True, help='hosted zone name')
+s3_create_parser.add_argument('--private',required=True, choices=['True', 'False'], help='Configure private/public hosted zone')
+
+# s3_upload_parser = s3_subparsers.add_parser('manage')
+# s3_upload_parser.add_argument('--bucket', required=True, help='Bucket name')
+# s3_upload_parser.add_argument('--file', required=True, help='File path to upload')
+# s3_upload_parser.add_argument('--key_name', required=True, help='New name for the file')
+
 args = parser.parse_args()
 
- # ec2 functions
+# ec2 functions
 
 if args.resource == 'ec2':
     if args.action == 'create':
@@ -57,3 +72,12 @@ if args.resource == 's3':
         upload_s3(args.file, args.bucket, args.key_name) #,ExtraArgs={'ACL': 'public-read'})
     elif args.action == 'list':
         list_s3()
+
+# route53 functions
+
+if args.resource == 'route53':
+    if args.action == 'create':
+        if args.private == 'True':
+            create_private_route53(args.name)
+        else: 
+            create_public_route53(args.name)
