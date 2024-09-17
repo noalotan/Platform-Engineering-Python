@@ -1,7 +1,7 @@
 import argparse
 from manage_ec2 import create_ec2, list_ec2, ec2_manage
 from manage_s3 import create_s3, list_s3, upload_s3
-from manage_route53 import create_private_route53, create_public_route53
+from manage_route53 import create_private_route53, create_public_route53, route53_manage, cli_created_hosted_zones
 
 parser = argparse.ArgumentParser(description="AWS CLI Tool")
 subparsers = parser.add_subparsers(dest="resource")
@@ -39,17 +39,22 @@ s3_list_parser = s3_subparsers.add_parser('list')
 
 #route53 parsers
 
-s3_parser = subparsers.add_parser('route53')
-s3_subparsers = s3_parser.add_subparsers(dest='action')
+route53_parser = subparsers.add_parser('route53')
+route53_subparsers = route53_parser.add_subparsers(dest='action')
 
-s3_create_parser = s3_subparsers.add_parser('create')
-s3_create_parser.add_argument('--name', required=True, help='hosted zone name')
-s3_create_parser.add_argument('--private',required=True, choices=['True', 'False'], help='Configure private/public hosted zone')
+route53_create_parser = route53_subparsers.add_parser('create')
+route53_create_parser.add_argument('--name', required=True, help='hosted zone name')
+route53_create_parser.add_argument('--private',required=True, choices=['True', 'False'], help='Configure private/public hosted zone')
 
-# s3_upload_parser = s3_subparsers.add_parser('manage')
-# s3_upload_parser.add_argument('--bucket', required=True, help='Bucket name')
-# s3_upload_parser.add_argument('--file', required=True, help='File path to upload')
-# s3_upload_parser.add_argument('--key_name', required=True, help='New name for the file')
+route53_manage_parser = route53_subparsers.add_parser('manage')
+route53_manage_parser.add_argument('--id', required=True, help='Hosted Zone Id')
+route53_manage_parser.add_argument('--comment', required=True, help='Comment for the action')
+route53_manage_parser.add_argument('--action', required=True, choices=['CREATE', 'DELETE', 'UPSET'], help='Action you want to make')
+route53_manage_parser.add_argument('--name', required=True, help='record name')
+route53_manage_parser.add_argument('--typ', required=True, choices=['SOA','A','TXT','NS','CNAME','MX','NAPTR','PTR','SRV','SPF','AAAA','CAA','DS'], help='record type')
+route53_manage_parser.add_argument('--ip', required=True, help='Ip address for the record')
+
+route53_manage_parser = route53_subparsers.add_parser('list')
 
 args = parser.parse_args()
 
@@ -81,3 +86,12 @@ if args.resource == 'route53':
             create_private_route53(args.name)
         else: 
             create_public_route53(args.name)
+    elif args.action == 'list':
+        print(cli_created_hosted_zones())
+    elif args.action == 'manage':
+        for zone in cli_created_hosted_zones():
+            if zone['Id'] == args.resource_id:
+                print('True')
+                route53_manage(args.resource_id, args.comment, args.action, args.name, args.typ, args.ip)
+        else:
+            print("The hosted zone was not created by noa-cli")
