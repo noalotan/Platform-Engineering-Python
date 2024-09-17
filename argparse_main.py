@@ -89,9 +89,4 @@ if args.resource == 'route53':
     elif args.action == 'list':
         print(cli_created_hosted_zones())
     elif args.action == 'manage':
-        for zone in cli_created_hosted_zones():
-            if zone['Id'] == args.resource_id:
-                print('True')
-                route53_manage(args.resource_id, args.comment, args.action, args.name, args.typ, args.ip)
-        else:
-            print("The hosted zone was not created by noa-cli")
+        route53_manage(args.resource_id, args.comment, args.action, args.name, args.typ, args.ip)
