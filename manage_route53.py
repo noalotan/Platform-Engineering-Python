@@ -81,6 +81,7 @@ def filter_hosted_zones(all_hosted_zones):
                     'Name': zone['Name']})
     return my_hostedzones
 
+#check cli-created hosted zones
 def cli_created_hosted_zones():
     all_hosted_zones = list_hosted_zones()
     filtered_zones = filter_hosted_zones(all_hosted_zones)
