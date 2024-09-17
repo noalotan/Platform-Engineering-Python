@@ -1,7 +1,7 @@
 import argparse
-from manage_ec2 import create_ec2, list_ec2, ec2_manage
-from manage_s3 import create_s3, list_s3, upload_s3
-from manage_route53 import create_private_route53, create_public_route53, route53_manage, cli_created_hosted_zones
+from manage_ec2 import *
+from manage_s3 import *
+from manage_route53 import *
 
 parser = argparse.ArgumentParser(description="AWS CLI Tool")
 subparsers = parser.add_subparsers(dest="resource")
