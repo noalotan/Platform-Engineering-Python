@@ -41,14 +41,14 @@ Install Dependencies:
 
 Ensure you have Python 3.x installed. Install the required Python packages using pip:
 
-sh
+```sh
 Copy code
 pip install -r requirements.txt
 Set Up AWS Credentials:
 
 Make sure your AWS credentials are configured. You can set them up using the AWS CLI:
 
-sh
+```sh
 Copy code
 aws configure
 Usage
@@ -57,49 +57,49 @@ The scripts in this repository are designed to be run from the command line. Bel
 EC2
 Create an EC2 instance:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py ec2 create --image <ubuntu|amazon_linux> --type <t3.nano|t4.nano> --name <instance_name>
 Manage an EC2 instance:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py ec2 manage --id <instance_id> --process <process_name>
 List EC2 instances:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py ec2 list
 S3
 Create an S3 bucket:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py s3 create --name <bucket_name> --acl <private|public-read>
 Upload a file to S3:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py s3 upload --file <file_path> --bucket <bucket_name> --key <key_name>
 List S3 buckets:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py s3 list
 Route53
 Create a Route53 record:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py route53 create --name <record_name> --private <true|false>
 List Route53 hosted zones:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py route53 list
 Manage a Route53 record:
 
-sh
+```sh
 Copy code
 python3 argparse_main.py route53 manage --resource-id <resource_id> --comment <comment> --action <action> --name <record_name> --type <record_type> --ip <ip_address>
 Project Structure
