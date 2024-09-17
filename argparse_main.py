@@ -58,35 +58,37 @@ route53_manage_parser = route53_subparsers.add_parser('list')
 
 args = parser.parse_args()
 
-# ec2 functions
 
-if args.resource == 'ec2':
-    if args.action == 'create':
-        create_ec2(args.image, args.type, args.name)
-    elif args.action == 'manage':
-        ec2_manage(args.id, args.process)
-    elif args.action == 'list':
-        list_ec2()
+def main():
+    
+    # ec2 functions
+    if args.resource == 'ec2':
+        if args.action == 'create':
+            create_ec2(args.image, args.type, args.name)
+        elif args.action == 'manage':
+            ec2_manage(args.id, args.process)
+        elif args.action == 'list':
+            list_ec2()
+            
+    #s3 functions 
+    if args.resource == 's3':
+        if args.action == 'create':
+            create_s3(args.name, args.acl)
+        elif args.action == 'upload':
+            upload_s3(args.file, args.bucket, args.key_name) #,ExtraArgs={'ACL': 'public-read'})
+        elif args.action == 'list':
+            list_s3()
+            
+    # route53 functions
+    if args.resource == 'route53':
+        if args.action == 'create':
+            if args.private == 'True':
+                create_private_route53(args.name)
+            else: 
+                create_public_route53(args.name)
+        elif args.action == 'list':
+            print(cli_created_hosted_zones())
+        elif args.action == 'manage':
+            route53_manage(args.resource_id, args.comment, args.action, args.name, args.typ, args.ip)
 
-#s3 functions 
-
-if args.resource == 's3':
-    if args.action == 'create':
-        create_s3(args.name, args.acl)
-    elif args.action == 'upload':
-        upload_s3(args.file, args.bucket, args.key_name) #,ExtraArgs={'ACL': 'public-read'})
-    elif args.action == 'list':
-        list_s3()
-
-# route53 functions
-
-if args.resource == 'route53':
-    if args.action == 'create':
-        if args.private == 'True':
-            create_private_route53(args.name)
-        else: 
-            create_public_route53(args.name)
-    elif args.action == 'list':
-        print(cli_created_hosted_zones())
-    elif args.action == 'manage':
-        route53_manage(args.resource_id, args.comment, args.action, args.name, args.typ, args.ip)
+main()
