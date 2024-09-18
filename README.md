@@ -9,9 +9,9 @@ Welcome to the **Platform Engineering with Python** repository! This project con
   - [Installing Jenkins, Java, and Git](#installing-jenkins-java-and-git)
   - [Installing Python, pip, boto3, and AWS CLI](#installing-python-pip-boto3-and-aws-cli)
 - [Usage](#usage)
-  - [EC2](ec2)
-  - [S3](s3)
-  - [Route53](route53)
+  - [EC2](#ec2)
+  - [S3](#s3)
+  - [Route53](#route53)
 
 ## Overview
 
