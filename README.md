@@ -52,6 +52,12 @@ Install boto3 and AWS CLI:
 pip install boto3 awscli
 ```
 
+Configure your aws:
+
+```sh
+aws configure
+```
+
 ## Usage
 The scripts in this repository are designed to be run from the command line. Below are examples of how to use each script.
 
