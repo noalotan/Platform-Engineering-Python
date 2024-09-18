@@ -55,7 +55,7 @@ pip install boto3 awscli
 ## Usage
 The scripts in this repository are designed to be run from the command line. Below are examples of how to use each script.
 
-__EC2__
+### EC2
 
 Create an EC2 instance:
 ```sh
@@ -72,7 +72,7 @@ List EC2 instances:
 python3 argparse_main.py ec2 list
 ```
 
-__S3__
+### S3
 
 Create an S3 bucket:
 ```sh
@@ -89,7 +89,7 @@ List S3 buckets:
 python3 argparse_main.py s3 list
 ```
 
-__Route53__
+### Route53
 
 Create a Route53 record:
 ```sh
